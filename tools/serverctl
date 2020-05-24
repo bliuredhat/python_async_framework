@@ -1,0 +1,54 @@
+#!/bin/sh
+
+ARGV="$@"
+
+SLEEPTIME=1
+DOUBLESLEEPTIME=1
+
+#demo port; update this value for your project
+PORT=9090
+
+CURDIR=$(cd $(dirname $0)/..; pwd)
+PROMETHEUS_DIR=$CURDIR/.prometheus_multiproc_dir
+if [ ! -d "$PROMETHEUS_DIR" ]; then \
+    mkdir -p  $PROMETHEUS_DIR
+else \
+    rm -f $PROMETHEUS_DIR/* ; \
+fi
+export prometheus_multiproc_dir=$PROMETHEUS_DIR
+
+
+
+
+case $ARGV in
+start)
+    n=`ps uxa | grep main -w | grep $PORT -w | grep 'grep' -v | wc -l`
+    if [ $n != 0 ];then
+        ps uxa | grep main -w | grep $PORT -w | grep 'grep' -v | awk '{print $2}' | xargs kill -9
+    
+        sleep $SLEEPTIME
+    for ((i=1; i<=30; i ++))
+    do
+            n=`ps uxa | grep main -w |grep  $PORT | grep 'grep' -v | wc -l`
+        if [ $n != 0 ];then
+            sleep $DOUBLESLEEPTIME
+        fi
+    done
+    fi
+
+    nohup python3 $CURDIR/main.py --port=$PORT >> $CURDIR/log/server.log 2>&1 &
+
+    ;;
+
+stop)
+    ps uxa | grep main -w | grep $PORT -w | grep 'grep' -v | awk '{print $2}' | xargs kill -9
+    sleep $SLEEPTIME
+    n=`ps uxa | grep main -w | grep $PORT -w | grep 'grep' -v | wc -l`
+    if [ $n != 0 ];then
+    ps uxa | grep main -w | grep $PORT -w | grep 'grep' -v | awk '{print $2}' | xargs kill -9
+    fi
+    ;;
+*)
+    echo "please run: ./serverctl start | stop"
+    echo "Make sure you have update the PORT para."
+esac
