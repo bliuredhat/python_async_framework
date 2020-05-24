@@ -48,13 +48,13 @@ package: clean
 	    mkdir -p packages/$(PACKAGE_NAME); \
 	fi
 	mkdir -p packages/$(PACKAGE_NAME)/common
-	mkdir -p packages/$(PACKAGE_NAME)/conf
+	mkdir -p packages/$(PACKAGE_NAME)/etc
 	mkdir -p packages/$(PACKAGE_NAME)/demo
 	mkdir -p packages/$(PACKAGE_NAME)/log
 	mkdir -p packages/$(PACKAGE_NAME)/tools
 	cp -fr ./*.py packages/$(PACKAGE_NAME)
 	cp -r ./common/* packages/$(PACKAGE_NAME)/common
-	cp -r ./conf/* packages/$(PACKAGE_NAME)/conf
+	cp -r ./etc/* packages/$(PACKAGE_NAME)/etc
 	cp -r ./demo/* packages/$(PACKAGE_NAME)/demo
 	cp -r ./tools/* packages/$(PACKAGE_NAME)/tools
 	cp -r Makefile packages/$(PACKAGE_NAME)

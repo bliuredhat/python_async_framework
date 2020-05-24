@@ -25,6 +25,6 @@ fi
 
 
 # etc
-#ln -sf /home/s/apps/CloudSearch/asynchronous_application_python/etc/config.$host  /home/s/apps/CloudSearch/asynchronous_application_python/etc/qrec_server.conf
+#ln -sf /PATH/etc/config.$host  /PATH/etc/qrec_server.conf
 
 
